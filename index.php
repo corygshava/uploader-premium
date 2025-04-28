@@ -87,7 +87,8 @@
     <div class="content">
         <div class="callout w3-center">
             <h1>Your files anywhere, anytime</h1>
-            <p>Secure lockbox storage for all your files both big and small</p>
+            <p>Secure lockbox storage for all your files both big and small.</p>
+            <i class="themetxt">work in progress</i>
             <div class="w3-center">
                 <button class="themebtn active">go</button>
                 <a class="themebtn" href="uploaded.php">view uploads</a>
