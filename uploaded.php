@@ -76,6 +76,19 @@
 			font-size: 0.9rem;
 			color: var(--metacolor);
 		}
+		.container{
+			height: 100px;
+		}
+
+		.loader {
+			width: calc(80px / cos(45deg));
+			height: 14px;
+			background: repeating-linear-gradient(-45deg,#000 0 15px,#0000 0 20px) left/200% 100%;
+			animation: l3 2s infinite linear;
+		}
+		@keyframes l3 {
+		    100% {background-position:right}
+		}
 	</style>
 
 	<link rel="stylesheet" href="css/styles.css">
@@ -95,6 +108,10 @@
 
 	<div class="content w3-text-white newversion">
 		<div class="files_holder">
+			<div class="file-card placeholder">
+				<div class="loader"></div>
+				<div>loading files</div>
+			</div>
 		</div>
 
 		<div class="container">
@@ -144,6 +161,16 @@
 		}
 
 		function renderfiles(list) {
+			filesguy.innerHTML = "";
+
+			if(list.length == 0){
+				filesguy.innerHTML = `
+					<div class="file-card placeholder">
+						<div><i>no uploads yet</i></div>
+					</div>
+				`;
+			}
+
 			list.forEach((el,id) => {
 				let item = document.createElement('div');
 
@@ -162,7 +189,7 @@
 				`
 
 				filesguy.appendChild(item);
-			})
+			});
 		}
 
 		function getsize(s) {
@@ -220,7 +247,9 @@
 		}
 
 		window.onload = () => {
-			init();
+			setTimeout(() => {
+				init();
+			},1200);
 		}
 	</script>
 	<?php
