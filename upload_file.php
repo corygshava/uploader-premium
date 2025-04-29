@@ -11,12 +11,13 @@
     <title>File uploader</title>
 </head>
 <body>
-	<header>
-    </header>
+	<?php
+		include 'elements/navbar.php'
+	?>
 
     <div class="content">
 		<div class="formholder">
-			<h1>File uploader</h1>
+			<h1 class="my_header">File uploader</h1>
 			<?php
 				echo "";
 			?>
@@ -35,15 +36,13 @@
 		</div>
 	</div>
 
-	<script src="js/loader.js"></script>
+	<?php
+		include 'elements/codes.php';
+	?>
+
 	<script>
 		loadguy = document.querySelector('.reporter');
-		// spawnloader(123123,loadguy);
-
-		// reco 9
 	</script>
-
-	<script src="js/app.js"></script>
 
 	<?php
 		include 'elements/nav.php';
