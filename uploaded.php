@@ -38,7 +38,7 @@
 		}
 		.file-card{
 			flex: 0 1 350px;
-			min-height: 150px;
+			min-height: 180px;
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;

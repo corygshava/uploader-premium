@@ -21,7 +21,7 @@
 			<?php
 				echo "";
 			?>
-			<form id="uploadForm" action="getaccess.php" method="POST" enctype="multipart/form-data">
+			<form id="uploadForm" action="uploader.php" method="POST" enctype="multipart/form-data">
 				<input type="file" name="file" id="file" required>
 				<input type="text" name="thekey" id="thekey" placeholder="enter your key here">
 				<input type="hidden" name="PHP_SESSION_UPLOAD_PROGRESS" value="<?= uniqid(); ?>">
