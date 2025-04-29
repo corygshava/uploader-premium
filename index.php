@@ -41,6 +41,8 @@
 </head>
 <body>
 	<?php
+		$pagename = 0;
+
 		include 'elements/navbar.php';
 	?>
 	<div class="content">

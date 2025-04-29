@@ -12,6 +12,8 @@
 </head>
 <body>
 	<?php
+		$pagename = 1;
+
 		include 'elements/navbar.php'
 	?>
 

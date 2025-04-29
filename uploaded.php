@@ -48,7 +48,7 @@
 			background: var(--panelbg);
 			--metacolor: #777;
 		}
-		.file-card:hover{
+		.file-card:not(.placeholder):hover{
 			background: var(--bgcolor);
 			box-shadow: 0 0 12px var(--themecolor);
 			border: 2px solid transparent;
@@ -83,7 +83,8 @@
 		.loader {
 			width: calc(80px / cos(45deg));
 			height: 14px;
-			background: repeating-linear-gradient(-45deg,#000 0 15px,#0000 0 20px) left/200% 100%;
+			margin-bottom: 20px;
+			background: repeating-linear-gradient(-45deg,#fff 0 15px,#0000 0 20px) left/200% 100%;
 			animation: l3 2s infinite linear;
 		}
 		@keyframes l3 {
@@ -96,6 +97,8 @@
 </head>
 <body data-mode="light">
 	<?php
+		$pagename = 2;
+
 		include 'elements/navbar.php';
 		include 'elements/nav.php';
 	?>
