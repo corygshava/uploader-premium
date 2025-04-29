@@ -11,16 +11,17 @@
     <title>File uploader</title>
 </head>
 <body>
-	<header>
-    </header>
+	<?php
+		include 'elements/navbar.php'
+	?>
 
     <div class="content">
 		<div class="formholder">
-			<h1>File uploader</h1>
+			<h1 class="my_header">File uploader</h1>
 			<?php
 				echo "";
 			?>
-			<form id="uploadForm" action="uploader.php" method="POST" enctype="multipart/form-data">
+			<form id="uploadForm" action="getaccess.php" method="POST" enctype="multipart/form-data">
 				<input type="file" name="file" id="file" required>
 				<input type="text" name="thekey" id="thekey" placeholder="enter your key here">
 				<input type="hidden" name="PHP_SESSION_UPLOAD_PROGRESS" value="<?= uniqid(); ?>">
@@ -35,15 +36,13 @@
 		</div>
 	</div>
 
-	<script src="js/loader.js"></script>
+	<?php
+		include 'elements/codes.php';
+	?>
+
 	<script>
 		loadguy = document.querySelector('.reporter');
-		// spawnloader(123123,loadguy);
-
-		// reco 9
 	</script>
-
-	<script src="js/app.js"></script>
 
 	<?php
 		include 'elements/nav.php';

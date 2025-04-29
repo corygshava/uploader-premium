@@ -1,7 +1,7 @@
-<div class="options">
+<div class="options w3-hide-large">
 	<div class="menu">
-		<a href="index.php"><i class="fa fa-upload"></i> uploader</a>
-		<a href="uploads.php"><i class="fa fa-list"></i> uploaded files</a>
+		<a href="upload_file.php"><i class="fa fa-upload"></i> uploader</a>
+		<a href="uploaded.php"><i class="fa fa-list"></i> uploaded files</a>
 	</div>
 </div>
 
