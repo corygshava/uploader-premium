@@ -7,8 +7,8 @@
 
 <script type="text/javascript">
 	var menu = document.querySelector('.menu');
-	var thepage = document.title;
+	var _mypage = document.title;
 
-	var isuploader = (thepage.indexOf('upload') > 0) ? 0 : 1;
+	var isuploader = (_mypage.indexOf('upload') > 0) ? 0 : 1;
 	menu.querySelectorAll('a')[isuploader].className = "current";
 </script>

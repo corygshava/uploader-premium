@@ -1,7 +1,3 @@
-<?php
-	include 'actions/getfiles.php';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,9 +31,10 @@
 		    gap: 20px;
 		    width: 100%;
 		    padding: 20px 12px;
+		    margin-bottom: 73px;
 		}
 		.file-card{
-			flex: 0 1 350px;
+			flex: 0 1 400px;
 			min-height: 180px;
 			display: flex;
 			flex-direction: column;
@@ -110,66 +107,162 @@
 	</header>
 
 	<div class="content w3-text-white newversion">
+		<div class="filters">
+			<div class="thesect searchbox">
+				<i class="fa fa-search"></i>
+				<input type="text" placeholder="search uploaded files" id="searchnpt">
+			</div>
+
+			<div class="thesect filterbox w3-hide">
+				<a>all</a>
+				<a>documents</a>
+				<a>videos</a>
+			</div>
+		</div>
 		<div class="files_holder">
 			<div class="file-card placeholder">
 				<div class="loader"></div>
 				<div>loading files</div>
 			</div>
 		</div>
-
-		<div class="container">
-			<ul class="w3-hide">
-				<?php if (!empty($files)): ?>
-					<?php foreach ($files as $file): 
-						$filePath = $folder . $file;
-						if (is_file($filePath)):
-							$size = round(filesize($filePath) / 1024, 2) . ' KB';
-							$created = date("F d Y, H:i", filectime($filePath));
-					?>
-						<li>
-							<div class="file-info">
-								<div class="file-name"><?php echo htmlspecialchars($file); ?></div>
-								<div class="file-meta"><?php echo $size . ' | Created: ' . $created; ?></div>
-							</div>
-						</li>
-					<?php endif; endforeach; ?>
-				<?php else: ?>
-					<li>No files found.</li>
-				<?php endif; ?>
-			</ul>
-		</div>
 	</div>
+
+	<?php
+		include 'actions/getfiles.php';
+	?>
 
 	<script>
 		let files = JSON.parse(`<?=$filesdata?>`);
 
 		let filesguy = document.querySelector(".files_holder");
+		let searchnpt = document.querySelector("#searchnpt");
+
+		let filtererror = "";
 
 		function init() {
 			files.forEach(el => {
 				el.ftype = findfiletype(el.name);
 			});
 
-			filterfiles("*");
+			let flist = filterfiles("*");
+
+			renderfiles(flist);
 		}
 
 		function filterfiles(con) {
 			let touse = [];
 
-			if(con == "*"){
-				touse = files;
+			// reset the filtererror flag
+			filtererror = "";
+
+			// code for allowing modifiers into the search
+			let mod = "";
+			let moddata = "";
+			let validmod = false;
+			let mods = [
+				"title",
+				"before",
+				"after",
+				"above",
+				"w"
+			];
+			let modshelp = [
+				"enter title to search",
+				"list files uploaded before ...",
+				"list files uploaded after ...",
+				"list files above (enter size in KB)",
+				"list files with ..."
+			];
+
+			if(con.includes(":")){
+				mod = (((con.split(":")[0]).split(" ")).reverse()[0]).toLowerCase();
+
+				// check if a modifier was picked up
+				if(mod != ""){
+					// check if its a valid modifier
+					if(mods.indexOf(mod) >= 0){
+						if(con.split(":").length <= 2){
+							validmod = true;
+
+							moddata = (con.split(`${mod}:`)[1]).trim();
+
+							if(moddata != ""){
+								// con = mod != "title" ? (con.split(`${mod}:`)[0]) : moddata;
+								con = (con.split(`${mod}:`)[0]);
+
+								// console.log(`modifier detected : [${mod}:] -> [${moddata}]`);
+							} else {
+								filtererror = modshelp[mods.indexOf(mod)];
+							}
+						} else {
+							filtererror = "you cant have more than 2 modifiers";
+						}
+					} else {
+						filtererror = "enter a valid modifier";
+					}
+				} else {
+					filtererror = "the colon should only be used for search modifiers";
+				}
 			}
 
-			renderfiles(touse);
+			// first do the default search
+			touse = files;
+
+			if(con == "*"){
+				touse = files;
+			} else if(con.includes("before:")){
+				// code for files whose creation date is before the 
+			} else if(con != "" || con != undefined){
+				let tmparr_1 = files;
+				let tmparr_2 = [];
+
+				/*
+					element template
+					{"name":"7261_birds lyrics ref1.mp4","size":"17604.27","u_date":"April 29 25, 14:32","fpath":"uploads/7261_birds lyrics ref1.mp4","ftype":"video"}
+				*/
+
+				// using touse instead of files to prevent array mutation
+				tmparr_1.forEach((el,id) => {
+					if(el.name.toLowerCase().includes(con.toLowerCase())){
+						tmparr_2.push(el);
+					}
+				})
+
+				touse = tmparr_2;
+			}
+
+			// then apply the search modifiers to the result
+			if(validmod){
+				let tmparr_3 = touse;
+
+				switch(mods.indexOf(mod)){
+				case 0:
+					// title mod
+					tmparr_3 = filterfiles(moddata);
+
+					if(tmparr_3.length == 0){
+						filtererror = "no file has that title";
+					}
+					break;
+				defaut:
+					break;
+				}
+
+				touse = tmparr_3;
+			}
+
+			return touse;
 		}
 
-		function renderfiles(list) {
+		function renderfiles(list,ifempty) {
+			ifempty = ifempty == undefined ? "no uploads yet" : ifempty;
+
 			filesguy.innerHTML = "";
 
 			if(list.length == 0){
 				filesguy.innerHTML = `
 					<div class="file-card placeholder">
-						<div><i>no uploads yet</i></div>
+						<div><i>${ifempty}</i></div>
 					</div>
 				`;
 			}
@@ -196,7 +289,7 @@
 		}
 
 		function getsize(s) {
-			console.log(s);
+			// console.log(s);
 
 			let val = s;
 			let mul = 100;
@@ -249,11 +342,24 @@
 			showAlert("text copied successfully!",5,"success");
 		}
 
+		// event listeners
 		window.onload = () => {
 			setTimeout(() => {
 				init();
 			},1200);
 		}
+
+		searchnpt.addEventListener('input',e => {
+			let val = searchnpt.value;
+			let _mafiles = [];
+			let errtext = "search not found";
+
+			val = val == "" ? "*" : val;
+			_mafiles = filterfiles(val);
+			errtext = filtererror == "" ? errtext : filtererror;
+
+			renderfiles(_mafiles,errtext);
+		})
 	</script>
 	<?php
 		} else {

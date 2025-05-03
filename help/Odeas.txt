@@ -1,0 +1,7 @@
+[done]
+	uploaded
+	add file searching
+	add search modifier for 'title:'
+
+[undone]
+	add search modifier like 'type:','after: ' 'before: ','above: ','below: ' or 'type: '

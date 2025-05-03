@@ -1,5 +1,5 @@
 <?php
-	// $folder = "ggr/";
+	$folder = "ggr/";
 	$folder = "uploads/";
 	$files = array_diff(scandir($folder), array('.', '..'));
 	$filesdata = "[]";
